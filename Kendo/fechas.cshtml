@@ -1,0 +1,18 @@
+ <div class="form-group">
+                @Html.LabelFor(model => model.FechaFundacion, new { @class = "control-label" })
+
+
+                @(Html.Kendo().DatePickerFor(model => model.FechaFundacion)
+                  .Name("FechaFundacion")
+                  .Max(DateTime.Now)
+                  .Value(DateTime.Now)
+                  .HtmlAttributes(new
+                  {
+                      @class = "SoloFecha",
+                      Style = "width:100%",
+                      @maxlength = "10",
+                      @placeholder = "DD/MM/AAAA"
+                  }))
+                @Html.ValidationMessageFor(model => model.FechaFundacion)
+
+            </div>

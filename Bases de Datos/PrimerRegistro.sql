@@ -1,0 +1,1 @@
+select hfmi.estado from  HCL_FORMMEDINSUMOS hfmi where hfmi.formmedicas_id = hfm.id FETCH FIRST 1 ROWS ONLY

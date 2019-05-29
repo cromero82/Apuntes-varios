@@ -1,0 +1,347 @@
+<!-- Page Script -->
+@{
+    ViewBag.Title = "Registrar usuario";
+}
+
+@model UsuarioDb
+
+<div id="@Path.GetFileNameWithoutExtension(VirtualPath)">
+    <div class="page-header">
+        <h1><i class="fa fa-th-large page-header-icon"></i>&nbsp;&nbsp;@ViewBag.Title</h1>
+    </div>
+
+    @using (Ajax.BeginForm("InsUsuario", "Seguridad", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onSuccess" }))
+    {
+        @Html.AntiForgeryToken()
+
+
+
+        <div id="DatosPersonaUsuario">
+            @*@Html.Partial("~/Areas/ADMIN/Views/Shared/Partials/_PersonaDatosBasicos.cshtml", ViewBag.DatosPersona as Persona)*@
+        </div>
+
+        <div class="panel-primary">
+            <div class="panel-heading">
+                Datos de usuario
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+
+
+
+
+                    <div class="bs-example">
+                        <ul class="nav nav-pills">
+                            <li role="presentation" class="active"><a href="#Inf_General" aria-controls="Inf_General" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-user"></span> Datos básicos</a></li>
+                            @if (Model.Id > 0)
+                            {
+                                <li role="presentation"><a href="#Roles" aria-controls="Roles" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Roles</a></li>
+                                <li role="presentation"><a href="#Permisos" aria-controls="Permisos" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Permisos específicos</a></li>
+                            }
+                            else
+                            {
+                                <li class="disabled disabledTab" role="presentation"><a aria-controls="Roles" role="tab"><span class="glyphicon glyphicon-list-alt"></span> Roles</a></li>
+                                <li class="disabled disabledTab" role="presentation"><a aria-controls="Permisos" role="tab"><span class="glyphicon glyphicon-list-alt"></span> Permisos específicos</a></li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="Inf_General">
+                            <div class="form-group">
+                                @Html.HiddenFor(m => m.Id, new { id = "HiddenID" })
+                                <div class="col-md-6">
+
+                                    @Html.LabelFor(model => model.PersonasId, new { @class = "control-label" }) (*)
+                                    @*@(Html.Kendo().ComboBoxFor(model => model.PersonasId)
+                                        .Name("PersonasId")
+                                        .DataTextField("Filtro")
+                                        .DataValueField("Id")
+                                        .HtmlAttributes(new { @class = "form-control", style = "width:100%" })
+                                        .Height(290)
+                                        .Placeholder("Seleccione")
+                                        .Filter(FilterType.Contains)
+                                        .Text(Model.PersonaAsociada)
+                                        .DataSource(source =>
+                                        {
+                                            source.Custom()
+                                                        .ServerFiltering(true)
+                                                        .ServerPaging(true)
+                                                        .PageSize(80)
+                                                        .Type("aspnetmvc-ajax")
+                                                        .Transport(transport =>
+                                                        {
+                                                            transport.Read("VirtualizationComboPersonas", "ListasGenerales");
+                                                        })
+                                                        .Schema(schema =>
+                                                        {
+                                                            schema.Data("Data")
+                                                                .Total("Total");
+                                                        });
+                                        })
+                                        .Events(e => e.Change("OnChange"))
+                                        .Virtual(v => v.ItemHeight(26).ValueMapper("valueMapper"))
+
+                                        )*@
+
+                                                @(Html.Kendo().ComboBoxFor(model => model.PersonasId)
+                                                .DataTextField("Documento")
+                                                .DataValueField("Value")
+                                                .Template("<span class=\"k-state-default\"><h4><b>#: data.Nombres #</b></h4><p>#: data.Documento #</p></span>")
+                                                .AutoBind(false)
+                                                .Filter("contains")
+                                                .Placeholder("Ingrese la cedula de la persona asociada")
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetListComboPersonas", "ListasGenerales");
+                                                    })
+                                                    .ServerFiltering(true);
+                                                }).Events
+                                                (e =>
+                                                {
+                                                    e.Select("onSelect").Filtering("filtering");
+                                                })
+
+                                                .HtmlAttributes(new { style = "width: 100%" }))
+
+
+
+
+
+                                </div>
+
+
+
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.Usuario) <b>(*)</b>
+                                    @Html.TextBoxFor(m => m.Usuario, new { @class = "form-control", maxlength = 50, @style = "text-transform:uppercase", @placeholder="Ingrese el usuario" })
+                                    @Html.ValidationMessageFor(m => m.Usuario)
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="form-group">
+                                <div id="wrapper-entaportante" class="col-md-6">
+                                    @Html.LabelFor(m => m.EntaportantesId)
+                                    <div>
+                                        @(Html.Kendo().DropDownListFor(m => m.EntaportantesId)
+                                                          .DataTextField("Nombre")
+                                                          .DataValueField("Id")
+                                                          .OptionLabel("Seleccione...")
+                                                          .HtmlAttributes(new { style = "width: 100%;" })
+                                                          .DataSource(source =>
+                                                          {
+                                                              source.Read(read =>
+                                                              {
+                                                                  read.Action("GetListEntAportantes", "ListasGenerales");
+                                                              });
+                                                          }))
+                                    </div>
+
+                                    @Html.ValidationMessageFor(m => m.EntaportantesId)
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.Estado)
+                                    <div>
+                                        @(Html.Kendo().DropDownListFor(m => m.Estado)
+                                                          .DataTextField("Text")
+                                                          .DataValueField("Value")
+                                                          .HtmlAttributes(new { style = "width: 100%;" })
+                                                          .DataSource(source =>
+                                                          {
+                                                              source.Read(read =>
+                                                              {
+                                                                  read.Action("GetListEstados", "ListasGenerales");
+                                                              });
+                                                          }))
+                                    </div>
+
+                                    @Html.ValidationMessageFor(m => m.Estado)
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    @(Html.Kendo().CheckBox().Name("EntAportante").Label("Tiene entidad aportante"))
+                                </div>
+                            </div>
+
+                            <div class="panel-footer">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Guardar" />
+                            </div>
+
+
+
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="Roles">
+                            <div class="well well-sm">
+                                @Html.ActionLink("Agregar rol", "InsUsuarioRole", "Seguridad", new { Id = Model.Id, PersonaId = Model.PersonasId }, new { @class = "btn btn-primary", @data_modal = "modal-lg" })
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Roles de usuario</div>
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        @(Html.Kendo().Grid<UsuarioRolUorg>()
+                                          .Name("grid_roles_")
+
+                                          .Columns(columns =>
+                                          {
+                                              if (User.HasPermission("DEV"))
+                                              {
+                                                  columns.Bound(p => p.Id).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                              }
+                                              else
+                                              {
+                                                  columns.Bound(p => p.Id).Width(160).Hidden();
+                                              }
+                                              columns.Bound(p => p.Uorg).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                              columns.Bound(p => p.Rol).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                              columns.Bound(p => p.Id).ClientTemplate("#=actionTemplateRoles(data)#").Title("Acción").Width(180).Filterable(false);
+                                          })
+                                          .Pageable(x => x.Refresh(true))
+                                          .Sortable()
+                                          .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                          .Scrollable(s => s.Height("auto"))
+                                          .HtmlAttributes(new { @class = "table-responsive" })
+            //.Scrollable()
+
+                                          .DataSource(dataSource => dataSource
+                                              .Ajax()
+                                              .PageSize(10)
+                                              .Read(read => read.Action("GetListRolesUorgbyId", "Seguridad", new { UsuarioId = Model.Id }))
+                                          )
+                                          .Events(events => events.DataBound("handleAjaxModal"))
+
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane fade" id="Permisos">
+                            <div class="well well-sm">
+                                @Html.ActionLink("Registrar", "InsUsuarioPermiso", "Seguridad", new { Id = Model.Id, PersonaId = Model.PersonasId }, new { @class = "btn btn-primary", @data_modal = "modal-lg" })
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Permisos</div>
+                                <div class="panel-body">
+                                    <div class="col-md-12">
+                                        @(Html.Kendo().Grid<UsuarioPermisoUorg>()
+                                      .Name("grid_Permisos_")
+                                      .Columns(columns =>
+                                      {
+                                          if (User.HasPermission("DEV"))
+                                          {
+                                              columns.Bound(p => p.Id).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                          }
+                                          else
+                                          {
+                                              columns.Bound(p => p.Id).Width(160).Hidden();
+                                          }
+                                          columns.Bound(p => p.Uorg).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                          columns.Bound(p => p.Permiso).Width(160).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains")));
+                                          columns.Bound(p => p.Id).ClientTemplate("#=actionTemplatePermisos(data)#").Title("Acción").Width(180).Filterable(false);
+                                      })
+                                      .Pageable(x => x.Refresh(true))
+                                      .Sortable()
+                                      .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                      .Scrollable(s => s.Height("auto"))
+                                      .HtmlAttributes(new { @class = "table-responsive" })
+            //.Scrollable()
+
+                                      .DataSource(dataSource => dataSource
+                                          .Ajax()
+                                          .PageSize(10)
+                                          .Read(read => read.Action("GetListPermisosUorgbyId", "Seguridad", new { UsuarioId = Model.Id }))
+                                      )
+                                      .Events(events => events.DataBound("handleAjaxModal"))
+
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    }
+</div>
+
+<script>
+
+
+    function onSelect(e) {
+        var dataItem = this.dataItem(e.item.index());
+        //alert("event :: select (" + dataItem.Text + " : " + dataItem.Value + ")");
+        var id = dataItem.Value;
+        $.post("/AFI/PartialViewAfi/PanelAfiliado", { idPer: id },
+        function (result) {
+            $("#DatosPersonaUsuario").html(result)
+        });
+    }
+
+
+    var isEnterKeyPress = false;
+
+    var filtering = function (e) {
+        var filter = e.filter;
+
+        if (typeof filter == "undefined") {
+            e.preventDefault();
+            e.sender.open();
+        }
+        if (!filter.value || !isEnterKeyPress) {
+            e.preventDefault();
+        }
+
+        isEnterKeyPress = false;
+    }
+
+    var search = function (e) {
+        var products = $("#PersonasId").data("kendoComboBox");
+        if (kendo.keys.ENTER == e.keyCode) {
+            isEnterKeyPress = true;
+            var value = $(this).val();
+            products.search(value);
+        } else {
+            products.close();
+        }
+    }
+
+    $(function () {
+        var products = $("#PersonasId").data("kendoComboBox");
+        products.input.keypress(search);
+    });
+
+
+</script>
+
+@section Scripts {
+    <!-- Plantilla que se utilizará en la columna de acciones de la grilla-->
+    <script id="actionTemplateRoles" type="text/x-kendo-template">
+        <div class='text-center'>
+            <a class='btn btn-primary' data-modal="modal-lg" href='@Url.Action("UpdUsuarioRole", "Seguridad")/#=data.Id#'>Editar</a>
+            <a class='btn btn-danger' onclick='removeRowRole(event)'>Eliminar</a>
+        </div>
+    </script>
+    <script id="actionTemplatePermisos" type="text/x-kendo-template">
+        <div class='text-center'>
+            <a class='btn btn-primary' data-modal="modal-lg" href='@Url.Action("UpdUsuarioPermiso", "Seguridad")/#=data.Id#'>Editar</a>
+            <a class='btn btn-danger' onclick='removeRowPermiso(event)'>Eliminar</a>
+        </div>
+    </script>
+    <script src="@Url.Content(Utils.GetJsFilePath(VirtualPath))"></script>
+}
+

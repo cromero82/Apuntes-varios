@@ -1,0 +1,105 @@
+<div class="form-group">
+                @Html.LabelFor(m => m.TdepartamentoId)
+                @(Html.Kendo().DropDownListFor(model => model.TdepartamentoId)
+                              .Name("TdepartamentoId")
+                              .DataTextField("Nombre")
+                              .DataValueField("Id")
+                              .OptionLabel("Seleccione...")
+                              .DataSource(source =>
+                              {
+                                  source.Custom().Type("aspnetmvc-ajax")
+                                      .Transport(t =>
+                                      {
+                                          t.Read(r => r.Action("GetListTdepartamentos", "Tlistas", new { Area = "ADMIN" }));
+                                      })
+                                      .ServerFiltering(false)
+                                      .Schema(s => { s.Data("Data").Total("Total").Errors("Errors"); })
+                                      .Events(e => e.Error("handleOnErrorModelState"));
+                              })
+                            .HtmlAttributes(new { style = "width:100%;", @class = "itemComponente" })
+                )
+                @Html.ValidationMessageFor(m => m.TdepartamentoId)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.TmunicipioId)
+                @(Html.Kendo().DropDownListFor(model => model.TdepartamentoId)
+                              .Name("TmunicipioId")
+                              .DataTextField("Nombre")
+                              .DataValueField("Id")
+                              .Filter(FilterType.Contains)
+                              .OptionLabel("Seleccione...")
+                            //.DataSource(source =>
+                            //{
+                            //    source.Custom().Type("aspnetmvc-ajax")
+                            //        .Transport(t =>
+                            //        {
+                            //            t.Read(r => r.Action("InsListaMunicipios", "Tlistas", new { Area = "ADMIN" }));
+                            //        })
+                            //        .ServerFiltering(false)
+                            //        .Schema(s => { s.Data("Data").Total("Total").Errors("Errors"); })
+                            //        .Events(e => e.Error("handleOnErrorModelState"));
+                            //})
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetListTmunicipios", "Tlistas")
+                                        .Data("InsInstitucion.funcionFiltros");
+                                })
+                                .ServerFiltering(true);
+                            })
+                            .HtmlAttributes(new { style = "width:100%;", @class = "itemComponente" })
+                            .CascadeFrom("TdepartamentoId")
+                )
+
+                @Html.ValidationMessageFor(m => m.TmunicipioId)
+            </div>
+            
+            
+             @(Html.Kendo().ComboBoxFor(model => model.PersonasId)
+                                                .DataTextField("Documento")
+                                                .DataValueField("Value")
+                                                .Template("<span class=\"k-state-default\"><h4><b>#: data.Nombres #</b></h4><p>#: data.Documento #</p></span>")
+                                                .AutoBind(false)
+                                                .Filter("contains")
+                                                .Placeholder("Ingrese la cedula de la persona asociada")
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetListComboPersonas", "ListasGenerales");
+                                                    })
+                                                    .ServerFiltering(true);
+                                                }).Events
+                                                (e =>
+                                                {
+                                                    e.Select("onSelect").Filtering("filtering");
+                                                })
+
+                                                .HtmlAttributes(new { style = "width: 100%" }))
+                                                
+var filtering = function (e) {
+        var filter = e.filter;
+
+        if (typeof filter == "undefined") {
+            e.preventDefault();
+            e.sender.open();
+        }
+        if (!filter.value || !isEnterKeyPress) {
+            e.preventDefault();
+        }
+
+        isEnterKeyPress = false;
+    }
+
+
+ function onSelect(e) {
+        var dataItem = this.dataItem(e.item.index());
+        //alert("event :: select (" + dataItem.Text + " : " + dataItem.Value + ")");
+        var id = dataItem.Value;
+        $.post("/AFI/PartialViewAfi/PanelAfiliado", { idPer: id },
+        function (result) {
+            $("#DatosPersonaUsuario").html(result)
+        });
+    }

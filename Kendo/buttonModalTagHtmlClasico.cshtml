@@ -1,0 +1,32 @@
+<div class="form-group">
+                                    @(Html.Kendo().Grid<RegistroSignosNoInvasivos>()
+                                    .Name("gridNoInvasivos")
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(p => p.Id).Hidden();
+                                        columns.Bound(p => p.FechaRegistro).Title("Fecha y hora de registro").Format("{0:dd/MM/yyyy HH:mm}").Width(180);
+                                        columns.Bound(p => p.Usuario).Title("Profesional quién registra").Width(180);
+                                        columns.Bound(p => p.Id).ClientTemplate(
+                                            "<a href='" + Url.Action("VerModalNoInvasivos", "SignosVitales", new { Id = "#=Id#" }) + "' class='k-button btn-primary' data-modal='modal-lg'" + ">Histórico</a>"
+                                            ).Title("Acción").Width(85).Filterable(false);
+
+                                    })
+                                    .Pageable()
+                                    .Sortable()
+                                    .ColumnMenu()
+                                    .Filterable()
+                                    .HtmlAttributes(new { @class = "table-responsive" })
+                                    .DataSource(dataSource => dataSource
+                                        .Ajax()
+                                        .PageSize(10)
+                                        .ServerOperation(false)
+                                        .Read(read => read.Action("LeerHistoricoSignosVitales", "SignosVitales", new { criterio = "NOINVASIVOS" }))
+                                    )
+                                    .Events(events => events.DataBound("handleAjaxModal"))
+                                    )
+                                </div>
+                                
+                                
+                "<a  id='btnConsultarInventario' onclick=\"modalInventario('#:Lote#', '#:Invima#')\"  class='btn btn-default btn-labeled btn-sm' style='width:120px;'>" +
+                                        "<span class='btn-label icon glyphicon glyphicon-plus'></span> Registrar Glosa" +                    
+                                    "</a>"

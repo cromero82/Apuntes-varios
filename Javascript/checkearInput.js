@@ -1,0 +1,1 @@
+$("#porFormula").attr('checked', 'checked');

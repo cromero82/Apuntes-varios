@@ -1,0 +1,40 @@
+ @(Html.Kendo().Grid<TITAN.Areas.Armamento.Models.RptElementosVencerViewModel>()
+                    .Name("RptElementosVencer")
+                    .ToolBar(toolbar =>
+                    {
+                        toolbar.Custom().Text("Exportar").Action("ExportarReporte", "RptElementosVencer", new { Area = "Armamento", Format = "Excel", UNIDAD_ID = ViewBag.UNIDAD_CONSULTA });
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(c => c.SERIE).Width(130).Filterable(false);
+                        columns.Bound(c => c.LOTE).Width(100).Filterable(false);
+                        columns.Bound(c => c.TIPO_ADQUISICION).Width(160).Filterable(false);
+                        columns.Bound(c => c.TIPO_ELEMENTO).Width(220).Filterable(false);
+                        columns.Bound(c => c.CLASIFICACION).Width(220).Filterable(false);
+                        columns.Bound(c => c.MARCA).Width(320).Filterable(false);
+                        columns.Bound(c => c.NACIONALIDAD).Width(160).Filterable(false);
+                        columns.Bound(c => c.ESTADO_ELEMENTO).Width(160).Filterable(false);
+                        columns.Bound(c => c.FECHA_ADQUISICION).Width(160).Format("{0:dd/MM/yyyy}").Filterable(false);
+                        columns.Bound(c => c.FECHA_VENCIMIENTO).Width(180).Format("{0:dd/MM/yyyy}").Filterable(false);
+                        columns.Bound(c => c.VALOR).Format("{0:$ #,###.##}").HtmlAttributes(new { @class = "text-right" })
+                        .Width(130).Filterable(false);
+                    })
+                    .Scrollable(s => s.Height("auto"))
+                    .Pageable()
+                    .Filterable(filterable => filterable.Mode(GridFilterMode.Row))
+                    .Sortable(sortable =>
+                    {
+                        sortable.SortMode(GridSortMode.SingleColumn);
+                    })
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Model(model =>
+                        {
+                            model.Id(m => m.CONSECUTIVO);
+                        })
+                        .Read(read => read.Action("ConsultarInforme", "RptElementosVencer", new { Area = "Armamento", UNIDAD_ID = ViewBag.UNIDAD_CONSULTA }))
+                        .Create(create => create.Action("Crear", "RptElementosVencer", new { Area = "Armamento" }).Data("titan.kendo.serialize"))
+                        .Update(update => update.Action("Actualizar", "RptElementosVencer", new { Area = "Armamento" }).Data("titan.kendo.serialize"))
+                        .Destroy(destroy => destroy.Action("Eliminar", "RptElementosVencer", new { Area = "Armamento" }))
+                        )
+                    )

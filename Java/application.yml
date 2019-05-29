@@ -1,0 +1,4 @@
+<!--- For listening app on ip and port   --- !>
+server:
+ address: 192.168.1.131  
+ port: 8080

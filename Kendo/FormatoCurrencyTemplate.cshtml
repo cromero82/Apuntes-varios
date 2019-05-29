@@ -1,0 +1,22 @@
+.ClientRowTemplate(
+                            "<tr data-uid='#: uid #'>" +
+                                "<td class=''>" +
+                                    "<h3>#: Medicamento #" +
+                                    "<div><small> #: Presentacion# </small> <div> " +
+                                    "</h3>" +
+                                "</td>" +
+                                "<td class=''>" +
+                                    "<div><span class='description'>#: ValorUnitario #</span></div>" +
+                                    "<div><span class='description'>Iva Producto: #: ValorUnitarioIva# </span></div>" +
+                                    "<div><span class='description'>Subtotal : #: SubTotal# </span><div>" +
+                                "</td>" +
+                                        "<td class='col-sm-12 money-subcontenedor'>" +
+                                    "<span class='description'>#: ValorIntermediacion #</span>" +
+                                    "<span class='description'>Iva Intermediación : #: TotalIvaIntermediacion# </span>" +
+                                    "<span class='description'>Subtotal : #: SubtotalIntermediacion# </span>" +
+                                "</td>" +
+                                                "<td class='money-color-default money-subcontenedor'>" +
+                                            "<h3>#: kendo.toString(Total, 'c0') #</h3>" +
+                                "</td>" +                   
+                            "</tr>"
+                            )

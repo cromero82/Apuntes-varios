@@ -1,0 +1,6 @@
+columns.Bound(p => p.FICHA_TECNICA_ITEM_ARCHIVO_ID)
+             .ClientTemplate("#if(permiteDescargue=='True'){#<a class='enlaceDescarga' href='" + Url.Action("DescargarArchivo", "FichaTecnicaAprobacionItem") + "?id=#= FICHA_TECNICA_ITEM_ARCHIVO_ID #'>#=ARCHIVO#</a>#}else"
+                                                             + "{#<span>#=data.ARCHIVO  #</span>#}#")
+             .Filterable(false).Width(220).Title("Archivo ficha técnica");
+             
+var permiteDescargue = "@Model.FichaTecnica.PERMITE_DESCARGUE";             

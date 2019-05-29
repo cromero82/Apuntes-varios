@@ -1,0 +1,1 @@
+$(".Observacion").html(Observacion);
