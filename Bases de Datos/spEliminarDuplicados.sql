@@ -32,3 +32,4 @@ END;
 --  2. Llamado del StoreProcedure (desde sql developer o consola) 
 -----------------------------------------------------------------------
 exec  ELIMINARPAISESDUPLICADOS(314);
+--exec  ELIMINARPAISESDUPLICADOS( SELECT ID FROM LISTA WHERE NOMBRE = 'UMV_BARRIOS' AND ACTIVO = 1 AND ELIMINADO = 0 );
