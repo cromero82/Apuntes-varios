@@ -1,0 +1,18 @@
+// Section imports
+//----------------
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+// On the method
+//----------------
+  //... 
+        Date dateValue = null;
+        String formatIn = "ddMMyyyy";
+        // for this is neccesary try/catch block
+				try {
+					dateValue = new SimpleDateFormat(formatIn).parse(param.getValue().toString());
+		    		predicate = builder.greaterThan( r.get(param.getKey()), dateValue);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+  //... 
