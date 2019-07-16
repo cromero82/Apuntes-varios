@@ -15,7 +15,7 @@ editItem(pos:number, listaItem: ListaItem): void {
   }
 
 // Reciben parametros
-/*export class ListasItemsEditComponent implements OnInit {
+export class ListasItemsEditComponent implements OnInit {
   listaItems: ListaItem;
   lista: Lista;
   cloneListaItem:any;
@@ -28,7 +28,7 @@ editItem(pos:number, listaItem: ListaItem): void {
     private fb: FormBuilder,
     private servicio: ListaItemsService,
     private servicioLista: ListasService,
-    @Inject(MAT_DIALOG_DATA) data: any ) {*/
+    @Inject(MAT_DIALOG_DATA) data: any ) {
     
     // Here solution: Get data.
     this.lista = data['lista'];
