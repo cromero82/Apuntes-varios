@@ -1,0 +1,4 @@
+-- Instalacion por defecto en Windows
+-- 1. Luego de instalar, se debe agregar variable de entorno como se explica en esta url: http://dc-apuntes.blogspot.com/2016/04/postgresql-en-windows-desde-cmd.html
+-- 2. Se debe resetear el usuario administrador
+-- 3. Reset password seguir instrucciones. https://qsartoolbox.org/content/documents/ResettingPostgreSQLPassword.pdf
