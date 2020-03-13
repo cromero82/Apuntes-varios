@@ -6,3 +6,6 @@ this.cloneListaItem = JSON.stringify(this.listaItems);
 
 // para restaurar datos, se copia la información serializada
 this.listaItems = JSON.parse(this.cloneListaItem);
+
+// Para copiar un objeto y evitar comportamiento reactivo
+this.transicionesIndividualesClone = JSON.parse(JSON.stringify(this.transicionesIndividuales));
