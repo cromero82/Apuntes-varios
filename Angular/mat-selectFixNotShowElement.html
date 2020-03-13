@@ -1,0 +1,31 @@
+<mat-form-field class="w-100">
+            <mat-select class="w-100" placeholder="Transición a aplicar" [(value)]="transicion" [(ngModel)]="transicion"
+              (selectionChange)="changeTransition()" formControlName="transicion" [compareWith]="compareFn" >
+              <mat-option *ngFor="let option of transiciones" [value]="option">
+                {{ option.nombre }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="formularioTransicion.get('transicion').hasError('required')">
+              {{ 'constants.campoRequerido' }} </mat-error>
+          </mat-form-field>
+          
+          
+<script  type='javascript'>
+  evaluateOnlyOneTransition() {
+    if (this.transiciones.length === 1) {
+    // Here set value
+      this.transicion = this.transiciones[0];
+      this.formularioTransicion.get('transicion').setValue(this.transiciones[0]);
+      
+      this.changeTransition();
+      this.formularioTransicion.get('transicion').disable();
+      this.formularioTransicion.get('responsable').disable();
+    }
+  }
+
+// Here is the magic method
+  compareFn(option1,option2){
+    return option1.name===option2.name;
+  }
+
+</script>
