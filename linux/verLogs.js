@@ -4,3 +4,7 @@ $ journalctl
 
 // ver logs de un servicio en particular
 $ journalctl -u nginx.service
+
+
+// ver logs de ultimos 5 minutos
+journalctl -u  nginx.service --since "5 minute ago"
