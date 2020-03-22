@@ -7,6 +7,9 @@ $ mkdir nombre_dir
 // borrar un directorio
 $ rmdir nombre_dir
 
+// borrar un directorio con subdirectorios (no vacio)
+$ rm -r nombre_dir
+
 // Permisos de lectura y escritura de directorios
 $ chmod 777 ruta_directorio
 
