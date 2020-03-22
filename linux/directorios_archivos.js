@@ -10,6 +10,9 @@ $ rmdir nombre_dir
 // borrar un directorio con subdirectorios (no vacio)
 $ rm -r nombre_dir
 
+// renombrar archivo
+$ mv nombreArchivoActual nombreArchivoNuevo
+
 // Permisos de lectura y escritura de directorios
 $ chmod 777 ruta_directorio
 
