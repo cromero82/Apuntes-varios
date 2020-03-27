@@ -1,0 +1,4 @@
+SELECT DISTINCT( 
+    CONCAT ( CONCAT('DROP SEQUENCE ', SEQUENCE_NAME), ';')
+)
+FROM user_sequences
