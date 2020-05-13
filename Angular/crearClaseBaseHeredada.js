@@ -1,3 +1,4 @@
+// Tener en cuenta si se utilizan servicios inyectados
 // -----------------------------
 // La clase base
 import { MaxDecimalValue } from 'src/app/shared/form/number.validator';
@@ -27,3 +28,42 @@ constructor(
     }
  // Here another methdos
 }
+
+
+// --------------------------------------------------------------
+// Ejemplo con servicios inyectados
+// --------------------------------------------------------------
+
+
+export abstract class MenuBase {
+    servicio: MenuadminService;
+    authService: AuthService;
+    // ... Def others services
+    //... parameters
+
+    constructor(
+        servicio: MenuadminService,
+        authService: AuthService,
+        // ... others services
+    ) {
+        this.servicio = servicio;
+        this.authService = authService;
+        // ... Init others services
+    }
+    // body ..
+}
+
+export class MenuCreateComponent extends MenuBase implements OnInit  {
+  constructor(
+    // definicion local others services not in Base class
+    private servicioPermiso: PermisosService,
+     
+    servicio: MenuadminService,
+    authService: AuthService
+     )
+     {
+    super(servicio, authService /*, others services */);
+     }
+}
+
+     
