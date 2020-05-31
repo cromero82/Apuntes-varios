@@ -1,0 +1,2 @@
+-- En la sección inferior Services/ Editar configuración -> Pestaña: Configuracion campo VM options:
+-Dserver.port=8001
