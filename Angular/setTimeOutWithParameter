@@ -1,0 +1,16 @@
+ changeTipoMaterial( event: any) {
+    this.visibilityClaseMaterial = false;
+    const _this = this;
+    setTimeout(this.changingTipoMaterial, 50, _this);
+  }
+
+  changingTipoMaterial(_this) {
+    _this.visibilityClaseMaterial = true;
+    if (_this.CuadrillaRetiroModel.tipoMaterial !== undefined)  {
+      _this.pathClaseMaterial = _this.constants
+      .path_lista_items_clase_material.replace(
+        '{tipomaterialId}',
+        _this.CuadrillaRetiroModel.tipoMaterial.id + ''
+      );
+    }
+  }
