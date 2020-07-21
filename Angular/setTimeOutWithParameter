@@ -1,3 +1,13 @@
+// Sin funcion
+setTimeout((function(element) {
+                return function() {
+                  console.log(element);
+                  element.removeAttribute("ui-state-active");
+                }
+            })(element), 500);
+            
+            
+// Con llamado de  funcion
  changeTipoMaterial( event: any) {
     this.visibilityClaseMaterial = false;
     const _this = this;
