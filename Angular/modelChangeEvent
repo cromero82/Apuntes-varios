@@ -1,0 +1,12 @@
+// Este evento se ejecuta siempre que se cambia alguna propiedad en el componente
+
+ngOnChanges(changes: SimpleChanges) {
+    debugger;
+    const currentItem: SimpleChange = changes.item;
+    console.log('prev value: ', currentItem.previousValue);
+    console.log('got item: ', currentItem.currentValue);
+    if(currentItem.currentValue){
+       this.scannedUPC = changes.item.currentValue.upc;
+    }
+    this.suppliedQuantity = 0;
+  }
