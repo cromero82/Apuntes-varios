@@ -1,0 +1,19 @@
+create or replace procedure  Borrar_duplic_soli_pmt_mant
+as
+    SOLIC_PMT_ID SOLI_PMT_MANTENIMIENTO.SOLICITUD_PMT_ID%TYPE;
+    MANT_ID SOLI_PMT_MANTENIMIENTO.MANTENIMIENTO_ID%TYPE;
+ CURSOR  c_solic_pmt_mant IS
+     select  distinct (SOLICITUD_PMT_ID), MANTENIMIENTO_ID
+    from SOLI_PMT_MANTENIMIENTO where MANTENIMIENTO_ID in (
+        select  MANTENIMIENTO_ID
+            from SOLI_PMT_MANTENIMIENTO
+        group by MANTENIMIENTO_ID, SOLICITUD_PMT_ID
+        having count(*) > 1
+    );
+begin
+    OPEN c_solic_pmt_mant;
+    LOOP
+        FETCH c_solic_pmt_mant INTO SOLIC_PMT_ID, MANT_ID;
+        DBMS_OUTPUT.PUT_LINE(SOLIC_PMT_ID + ' ' + MANT_ID);
+    end loop;
+end;
