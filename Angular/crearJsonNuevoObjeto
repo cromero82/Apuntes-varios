@@ -1,0 +1,12 @@
+registerUser: UsuarioModel =  {
+    email: '',
+    password: '',
+    nombre: '',
+    apellido: '',
+    avatar: 'av-1.png',
+    repetirPassword: null,
+    rol: '',
+    username: '',
+    id: 0,
+    roles: []
+  };
