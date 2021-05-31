@@ -1,2 +1,13 @@
- String parametrosEntrada = new MessageFormat("numeroDocumento: {0}, idProyecto:{1} numeroEncargo: {2}, fideicomiso: {3}")
-        .format(tercero.getNumeroDocumento(), idProyecto,numeroEncargo, codigoFideicomiso );
+public static String concat(String... strings) {
+		String strOut = "";
+		try {
+			StringBuilder message = StringBuilder.class.newInstance();
+			for (String strPart : strings) {
+				message.append(strPart);
+			}
+			strOut = message.toString();
+		} catch (InstantiationException | IllegalAccessException e) {
+			Logs.LOG_ERRORES.error("StringUtil: no se ha podido concatenar las cadenas de texto. >> {}", e.getMessage());
+		}
+		return strOut;
+	}
